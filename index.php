@@ -72,6 +72,10 @@
             <div class="col-md-6">
                 <div id="display" class="jumbotron">
                     <center>
+                        <h3> 
+                            <div id="history"></div>
+                        </h3> 
+                        <br>
                         <h1> 
                             <div id="content"></div>
                         </h1>    
@@ -83,28 +87,93 @@
     </body>
 </html>
 <script>
-    var result = 0;
+    var lastClicked = "";
+    var initialState = true;
+    var operands = [];
+    var operations = [];
+    jQuery("#content").text("0");
     jQuery(document).on("click", ".number", function () {
+        if (initialState) {
+            jQuery("#content").text("");
+        }
         var clickedButton = jQuery(this).attr("value");
         var displayContent = jQuery("#content").text();
+        if (lastClicked === "operation") {
+            displayContent = "";
+        }
         jQuery("#content").text(displayContent + clickedButton);
+        lastClicked = "number";
+        initialState = false;
     });
     jQuery(document).on("click", ".operation", function () {
+        if (initialState) {
+            jQuery("#content").text("");
+        }
         var clickedButton = jQuery(this).attr("id");
         var displayContent = jQuery("#content").text();
-        if (clickedButton === "addition") {
-            result = parseInt(result) + parseInt(displayContent);
-            jQuery("#content").text(result);
-        } else if (clickedButton === "subtraction") {
-
-        } else if (clickedButton === "multiplication") {
-
-        } else if (clickedButton === "division") {
-
-        } else if (clickedButton === "equal") {
-
-        } else {
-
+        operands.push(displayContent);
+        operations.push(clickedButton);
+        lastClicked = "operation";
+        displayHistory();
+        if (clickedButton === "equal") {
+            computeResult();
         }
+        initialState = false;
     });
+    function displayHistory() {
+        var historyContent = "";
+        var operation;
+        for (var i = 0; i < operands.length; i++) {
+            if (operations[i] === "addition") {
+                operation = "+";
+            } else if (operations[i] === "subtraction") {
+                operation = "-";
+            } else if (operations[i] === "multiplication") {
+                operation = "x";
+            } else if (operations[i] === "division") {
+                operation = "/";
+            } else if (operations[i] === "equal") {
+                operation = "=";
+            }
+            historyContent = historyContent + operands[i] + operation;
+        }
+        jQuery("#history").text(historyContent);
+    }
+    function computeResult() {
+        var result = 0;
+        for (var i = 0; i < operations.length; i++) {
+            if (i === 0) {
+                if (operations[i] === "addition") {
+                    result = Number(operands[i]) + Number(operands[i + 1]);
+                }
+                if (operations[i] === "subtraction") {
+                    result = Number(operands[i]) - Number(operands[i + 1]);
+                }
+                if (operations[i] === "multiplication") {
+                    result = Number(operands[i]) * Number(operands[i + 1]);
+                }
+                if (operations[i] === "division") {
+                    result = Number(operands[i]) / Number(operands[i + 1]);
+                }
+            } else {
+                if (operations[i] === "addition") {
+                    result = result + Number(operands[i + 1]);
+                }
+                if (operations[i] === "subtraction") {
+                    result = result - Number(operands[i + 1]);
+                }
+                if (operations[i] === "multiplication") {
+                    result = result * Number(operands[i + 1]);
+                }
+                if (operations[i] === "division") {
+                    result = result / Number(operands[i + 1]);
+                }
+            }
+        }
+        console.log(result);
+        return result;
+    }
+    function htmlEntities(str) {
+        return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
 </script>
