@@ -114,32 +114,10 @@
                 changeLastOperation(clickedButton);
             }
             computeResult();
-            if (clickedButton === "equal") {
-                //computeResult();
-            }
             lastClicked = "operation";
             initialState = false;
         }
     });
-    function displayHistory() {
-        var historyContent = "";
-        var operation;
-        for (var i = 0; i < operands.length; i++) {
-            if (operations[i] === "addition") {
-                operation = "+";
-            } else if (operations[i] === "subtraction") {
-                operation = "-";
-            } else if (operations[i] === "multiplication") {
-                operation = "x";
-            } else if (operations[i] === "division") {
-                operation = "/";
-            } else if (operations[i] === "equal") {
-                operation = "=";
-            }
-            historyContent = historyContent + operands[i] + operation;
-        }
-        jQuery("#history").text(historyContent);
-    }
     function computeResult() {
         var historyContent = "";
         var operation, result;
@@ -147,42 +125,41 @@
             if (i === 0) {
                 if (operations[i] === "addition") {
                     operation = "+";
-                    result = Number(operands[i]) + Number(operands[i + 1]);
+                    result = Number(operands[i]);
                 }
                 if (operations[i] === "subtraction") {
                     operation = "-";
-                    result = Number(operands[i]) - Number(operands[i + 1]);
+                    result = Number(operands[i]);
                 }
                 if (operations[i] === "multiplication") {
                     operation = "x";
-                    result = Number(operands[i]) * Number(operands[i + 1]);
+                    result = Number(operands[i]);
                 }
                 if (operations[i] === "division") {
                     operation = "/";
-                    result = Number(operands[i]) / Number(operands[i + 1]);
+                    result = Number(operands[i]);
                 }
                 historyContent = historyContent + operands[i];
             } else {
                 if (operations[i] === "addition") {
                     operation = "+";
-                    result = result + Number(operands[i + 1]);
+                    result = result + Number(operands[i]);
                 }
                 if (operations[i] === "subtraction") {
                     operation = "-";
-                    result = result - Number(operands[i + 1]);
+                    result = result - Number(operands[i]);
                 }
                 if (operations[i] === "multiplication") {
                     operation = "x";
-                    result = result * Number(operands[i + 1]);
+                    result = result * Number(operands[i]);
                 }
                 if (operations[i] === "division") {
                     operation = "/";
-                    result = result / Number(operands[i + 1]);
+                    result = result / Number(operands[i]);
                 }
                 historyContent = historyContent + operation + operands[i];
             }
         }
-        console.log(result);
         jQuery("#content").text(result);
         jQuery("#history").text(historyContent);
     }
