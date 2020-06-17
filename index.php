@@ -82,6 +82,9 @@
                     <div class="col-md-3 zein-column">
                         <input type="button" id="backspace" class="zein-button btn-block" value="<----">  
                     </div>
+                    <div class="col-md-3 zein-column">
+                        <input type="button" id="reciprocal" class="zein-button btn-block" value="1/x">  
+                    </div>
                 </div>
             </div>
             <div class="col-md-6"></div>
@@ -95,6 +98,10 @@
     var operands = [];
     var operations = [];
     jQuery("#content").val("0");
+     jQuery(document).on("click", "#reciprocal", function () {
+      var displayContent = jQuery("#content").val();
+      jQuery("#content").val(1/Number(displayContent));
+    });
     jQuery(document).on("click", "#backspace", function () {
         var displayContent = jQuery("#content").val();
         if (displayContent.length === 1) {
