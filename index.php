@@ -79,6 +79,9 @@
                     <div class="col-md-3 zein-column">
                         <input type="button" id="reset" class="zein-button btn-block" value="C">  
                     </div>
+                    <div class="col-md-3 zein-column">
+                        <input type="button" id="backspace" class="zein-button btn-block" value="<----">  
+                    </div>
                 </div>
             </div>
             <div class="col-md-6"></div>
@@ -92,20 +95,30 @@
     var operands = [];
     var operations = [];
     jQuery("#content").val("0");
+    jQuery(document).on("click", "#backspace", function () {
+        var displayContent = jQuery("#content").val();
+        if (displayContent.length === 1) {
+            jQuery("#content").val("0");
+        } else {
+            jQuery("#content").val(displayContent.slice(0, -1));
+        }
+    });
     jQuery(document).on("click", "#reset", function () {
         jQuery("#content").val("0");
         jQuery("#history").val("");
         operands = [];
         operations = [];
-
+        initialState = true;
     });
     jQuery(document).on("click", "#decimal", function () {
         if (lastClicked === "number" && !decimalMode) {
             var clickedButton = jQuery(this).attr("value");
             var displayContent = jQuery("#content").val();
-            jQuery("#content").val(displayContent + clickedButton);
-            lastClicked = "decimal";
-            decimalMode = true;
+            if (displayContent.length < 15) {
+                jQuery("#content").val(displayContent + clickedButton);
+                lastClicked = "decimal";
+                decimalMode = true;
+            }
         }
     });
     jQuery(document).on("click", ".number", function () {
@@ -117,9 +130,14 @@
         if (lastClicked === "operation") {
             displayContent = "";
         }
-        jQuery("#content").val(displayContent + clickedButton);
-        lastClicked = "number";
-        initialState = false;
+        if (displayContent.length < 17) {
+            if (displayContent === "0") {
+                displayContent = "";
+            }
+            jQuery("#content").val(displayContent + clickedButton);
+            lastClicked = "number";
+            initialState = false;
+        }
     });
     jQuery(document).on("click", ".operation", function () {
         if (lastClicked !== "") {
@@ -134,8 +152,6 @@
             } else {
                 changeLastOperation(clickedButton);
             }
-            console.log(operations);
-            console.log(operands);
             computeResult();
             lastClicked = "operation";
             initialState = false;
@@ -191,8 +207,5 @@
         if (operations.length > 0) {
             operations[operations.length - 1] = operation;
         }
-    }
-    function htmlEntities(str) {
-        return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 </script>
