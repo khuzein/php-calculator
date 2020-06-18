@@ -85,6 +85,12 @@
                     <div class="col-md-3 zein-column">
                         <input type="button" id="reciprocal" class="zein-button btn-block" value="1/x">  
                     </div>
+                    <div class="col-md-3 zein-column">
+                        <input type="button" id="square" class="zein-button btn-block" value="X&#178">  
+                    </div>
+                    <div class="col-md-3 zein-column">
+                        <input type="button" id="square-root" class="zein-button btn-block" value="&#8730">  
+                    </div>
                 </div>
             </div>
             <div class="col-md-6"></div>
@@ -98,9 +104,17 @@
     var operands = [];
     var operations = [];
     jQuery("#content").val("0");
-     jQuery(document).on("click", "#reciprocal", function () {
-      var displayContent = jQuery("#content").val();
-      jQuery("#content").val(1/Number(displayContent));
+    jQuery(document).on("click", "#square-root", function () {
+        var displayContent = jQuery("#content").val();
+        jQuery("#content").val(Math.sqrt(displayContent));
+    });
+    jQuery(document).on("click", "#square", function () {
+        var displayContent = jQuery("#content").val();
+        jQuery("#content").val(sqr(displayContent));
+    });
+    jQuery(document).on("click", "#reciprocal", function () {
+        var displayContent = jQuery("#content").val();
+        jQuery("#content").val(1 / Number(displayContent));
     });
     jQuery(document).on("click", "#backspace", function () {
         var displayContent = jQuery("#content").val();
@@ -214,5 +228,9 @@
         if (operations.length > 0) {
             operations[operations.length - 1] = operation;
         }
+    }
+    function sqr(number) {
+        number = Number(number) * Number(number);
+        return number;
     }
 </script>
